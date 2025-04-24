@@ -52,7 +52,7 @@ services:
 
     postgres:
         container_name: simulotto-postgres
-        image: postgres:15-alpine
+        image: postgres:15
         restart: unless-stopped
         environment:
             POSTGRES_DB: simulotto
@@ -61,7 +61,6 @@ services:
         volumes:
             - ./.docker/postgres/dbdata:/var/lib/postgresql/data
             - ./docker-compose/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
-        command: postgres -c config_file=/etc/postgresql/postgresql.conf
         ports:
             - "5433:5432"
         networks:
