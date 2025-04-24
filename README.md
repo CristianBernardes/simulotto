@@ -4,41 +4,43 @@
 
 ## 🌐 Tecnologias Utilizadas
 
-- PHP 8.4 (FPM Alpine)
-- Laravel 12
-- Docker
-- Docker Compose
-- NGINX (Alpine)
-- MySQL 8.0
-- PostgreSQL 15 (auditoria)
+-   PHP 8.4 (FPM Alpine)
+-   Laravel 12
+-   Docker
+-   Docker Compose
+-   NGINX (Alpine)
+-   MySQL 8.0
+-   PostgreSQL 15 (auditoria)
 
 ## 💡 Objetivo
 
 Demonstrar na prática como:
 
-- Criar um ambiente Laravel com dois bancos de dados
-- Trabalhar com auditoria e logs imutáveis
-- Utilizar containers para fins educacionais e simulações técnicas
+-   Criar um ambiente Laravel com dois bancos de dados
+-   Trabalhar com auditoria e logs imutáveis
+-   Utilizar containers para fins educacionais e simulações técnicas
 
 ## 🌟 Requisitos Mínimos
 
-- Git
-- Docker e Docker Compose instalados
-- PHP CLI instalado (recomendado: PHP 8.2+)
+-   Git
+-   Docker e Docker Compose instalados
+-   PHP CLI instalado (recomendado: PHP 8.2+)
 
 ### Linux
-- Distribuição com suporte a Docker (Ubuntu, Debian, Arch, etc.)
+
+-   Distribuição com suporte a Docker (Ubuntu, Debian, Arch, etc.)
 
 ### Windows
-- **WSL 2** instalado (preferencialmente com Ubuntu)
-- Docker Desktop com suporte a WSL 2 ativado
+
+-   **WSL 2** instalado (preferencialmente com Ubuntu)
+-   Docker Desktop com suporte a WSL 2 ativado
 
 ## 🚀 Passos para Executar
 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seuusuario/simulotto.git
+git clone https://github.com/CristianBernardes/simulotto.git
 cd simulotto
 ```
 
@@ -59,10 +61,11 @@ docker-compose up -d --build
 ```
 
 Esse comando:
-- Faz o build do container Laravel
-- Sobe MySQL com logs ativados e replicação
-- Sobe PostgreSQL com logs configurados
-- Inicia o NGINX na porta `8080`
+
+-   Faz o build do container Laravel
+-   Sobe MySQL com logs ativados e replicação
+-   Sobe PostgreSQL com logs configurados
+-   Inicia o NGINX na porta `8080`
 
 ### 4. Acesse o sistema
 
