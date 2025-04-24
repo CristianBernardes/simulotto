@@ -29,6 +29,7 @@ class MigrateFullRefreshCommand extends Command
         $this->info('🔄 Refreshing MySQL migrations (main)...');
         Artisan::call('migrate:fresh', [
             '--path' => 'database/migrations/main',
+            '--seed' => true,
             '--force' => true,
         ]);
         $this->line(Artisan::output());
