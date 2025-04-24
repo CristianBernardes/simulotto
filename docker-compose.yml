@@ -1,0 +1,72 @@
+services:
+    # image project
+    app:
+        container_name: simulotto-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - .:/var/www
+        networks:
+            - simulotto
+
+    # nginx
+    nginx:
+        container_name: simulotto-nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - simulotto
+
+    # db mysql
+    mysql:
+        container_name: simulotto-mysql
+        image: mysql:8.0
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: simulotto
+            MYSQL_ROOT_PASSWORD: simulotto
+            MYSQL_PASSWORD: simulotto
+            MYSQL_USER: simulotto
+        volumes:
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        command:
+            - --default-authentication-plugin=mysql_native_password
+            - --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+            - --skip-ssl
+            - --general-log=1
+            - --general-log-file=/var/lib/mysql/general.log
+            - --log-bin=mysql-bin
+            - --server-id=1
+        ports:
+            - "3388:3306"
+        networks:
+            - simulotto
+
+    postgres:
+        container_name: simulotto-postgres
+        image: postgres:15-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: simulotto
+            POSTGRES_USER: simulotto
+            POSTGRES_PASSWORD: simulotto
+        volumes:
+            - ./.docker/postgres/dbdata:/var/lib/postgresql/data
+            - ./docker-compose/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+        command: postgres -c config_file=/etc/postgresql/postgresql.conf
+        ports:
+            - "5433:5432"
+        networks:
+            - simulotto
+
+networks:
+    simulotto:
+        driver: bridge
