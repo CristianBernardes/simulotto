@@ -19,14 +19,14 @@ class MigrateFullRefreshCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Refresh migrations for main (MySQL) and audit (PostgreSQL) connections';
+    protected $description = 'Refresh migrations for main (postgres_principal) and audit (postgres_auditoria) connections';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->info('🔄 Refreshing MySQL migrations (main)...');
+        $this->info('🔄 Refreshing postgres_principal migrations (main)...');
         Artisan::call('migrate:fresh', [
             '--path' => 'database/migrations/main',
             '--seed' => true,
@@ -34,10 +34,17 @@ class MigrateFullRefreshCommand extends Command
         ]);
         $this->line(Artisan::output());
 
-        $this->info('📝 Migrating PostgreSQL migrations (audit)...');
+        $this->info('📝 Migrating postgres_auditoria migrations (audit)...');
         Artisan::call('migrate', [
             '--path' => 'database/migrations/audit',
             '--database' => 'pgsql_auditoria',
+            '--force' => true,
+        ]);
+        $this->line(Artisan::output());
+
+        $this->info('🔄 Refreshing Function postgres_principal migrations (main)...');
+        Artisan::call('migrate', [
+            '--path' => 'database/migrations/functions',
             '--force' => true,
         ]);
         $this->line(Artisan::output());

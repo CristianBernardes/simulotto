@@ -26,32 +26,8 @@ services:
             - simulotto
 
     # db mysql
-    mysql:
-        container_name: simulotto-mysql
-        image: mysql:8.0
-        restart: unless-stopped
-        environment:
-            MYSQL_DATABASE: simulotto
-            MYSQL_ROOT_PASSWORD: simulotto
-            MYSQL_PASSWORD: simulotto
-            MYSQL_USER: simulotto
-        volumes:
-            - ./.docker/mysql/dbdata:/var/lib/mysql
-        command:
-            - --default-authentication-plugin=mysql_native_password
-            - --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
-            - --skip-ssl
-            - --general-log=1
-            - --general-log-file=/var/lib/mysql/general.log
-            - --log-bin=mysql-bin
-            - --server-id=1
-        ports:
-            - "3388:3306"
-        networks:
-            - simulotto
-
-    postgres:
-        container_name: simulotto-postgres
+    postgres_principal:
+        container_name: simulotto-postgres-principal
         image: postgres:15
         restart: unless-stopped
         environment:
@@ -59,7 +35,23 @@ services:
             POSTGRES_USER: simulotto
             POSTGRES_PASSWORD: simulotto
         volumes:
-            - ./.docker/postgres/dbdata:/var/lib/postgresql/data
+            - ./.docker/postgres/principal:/var/lib/postgresql/data
+            - ./docker-compose/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+        ports:
+            - "5432:5432"
+        networks:
+            - simulotto
+
+    postgres_auditoria:
+        container_name: simulotto-postgres-auditoria
+        image: postgres:15
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: simulotto
+            POSTGRES_USER: simulotto
+            POSTGRES_PASSWORD: simulotto
+        volumes:
+            - ./.docker/postgres/auditoria:/var/lib/postgresql/data
             - ./docker-compose/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
         ports:
             - "5433:5432"
