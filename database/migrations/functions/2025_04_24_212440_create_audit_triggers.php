@@ -5,7 +5,51 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     /**
-     * Run the migrations.
+     * Função log_audit_event
+     *
+     * Esta função é chamada por triggers nas tabelas do banco e tem como objetivo
+     * registrar eventos de auditoria para monitoramento de alterações em dados.
+     *
+     * Para cada evento (INSERT, UPDATE ou DELETE) nas tabelas associadas, a função:
+     * - Formata os dados do registro afetado em JSON.
+     * - Identifica o tipo de evento ('insert', 'update', 'delete').
+     * - Gera um hash de integridade (SHA256) para validação futura.
+     * - Insere os registros de auditoria em um banco externo dedicado à auditoria.
+     *
+     * @return TRIGGER Retorna `NULL` pois é uma função de trigger AFTER que não modifica as tuplas.
+     *
+     * Variáveis:
+     * - `payload_json` (JSON): Dados da linha afetada serializados em JSON.
+     * - `event_type` (string): O tipo de evento ('insert', 'update', 'delete').
+     * - `table_name` (string): O nome da tabela onde a operação ocorreu.
+     * - `record_id` (UUID): O identificador único da linha impactada.
+     * - `integrity` (string): Hash SHA256 gerado a partir do payload JSON.
+     *
+     * Etapas executadas:
+     * 1. Determinar o tipo do evento acionado pela trigger:
+     *    - INSERT: Registro completo da nova linha.
+     *    - UPDATE: Antes e depois das alterações.
+     *    - DELETE: Registro deletado.
+     * 2. Serializar os dados impactados em JSON.
+     * 3. Gerar um hash criptográfico para garantir a integridade dos dados.
+     * 4. Conectar ao banco de auditoria externo usando a extensão `dblink`.
+     * 5. Inserir o evento de auditoria na tabela `audit_logs` do banco de auditoria.
+     * 6. Encerrar a conexão após a operação ser concluída.
+     *
+     * Campos registrados na tabela `audit_logs`:
+     * - `id` (UUID): Identificador único do evento de auditoria.
+     * - `event` (string): Tipo de evento (insert, update, delete).
+     * - `table_name` (string): Nome da tabela modificada.
+     * - `record_id` (UUID): Identificador único do registro impactado.
+     * - `payload` (JSON): Dados do registro impactado.
+     * - `hash_integrity` (string): Hash de integridade gerado para o payload.
+     * - `created_at` (timestamp): Data e hora do evento.
+     *
+     * Exemplo de utilização:
+     * Esta função é utilizada por triggers criadas em tabelas como:
+     * - `bets`: Trigger trg_bets_audit.
+     * - `draws`: Trigger trg_draws_audit.
+     * - `game_types`: Trigger trg_game_types_audit.
      */
     public function up(): void
     {
