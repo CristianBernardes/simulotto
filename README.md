@@ -9,7 +9,6 @@
 -   Docker
 -   Docker Compose
 -   NGINX (Alpine)
--   MySQL 8.0
 -   PostgreSQL 15 (auditoria)
 
 ## 💡 Objetivo
