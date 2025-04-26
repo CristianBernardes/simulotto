@@ -31,7 +31,6 @@ class GameType extends Model
      * @var string[]
      */
     protected $fillable = [
-        'id',
         'name',
         'max_numbers',
         'number_range',
