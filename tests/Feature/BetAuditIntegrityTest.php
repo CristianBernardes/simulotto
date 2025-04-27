@@ -9,6 +9,7 @@ use App\Models\GameType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BetAuditIntegrityTest extends TestCase
@@ -22,8 +23,8 @@ class BetAuditIntegrityTest extends TestCase
      * Este caso verifica:
      * - Criação de um tipo de jogo, sorteio e uma aposta.
      * - Valida que os números da aposta e do sorteio são exatamente iguais.
-     * @test
      */
+    #[Test]
     public function it_identifies_a_winning_bet_against_a_draw()
     {
         // Usar nomes únicos para evitar violação de restrição única
@@ -59,8 +60,8 @@ class BetAuditIntegrityTest extends TestCase
      * - Atualização da aposta e registro de log de atualização.
      * - Exclusão da aposta e registro de log de exclusão.
      * - Verifica que todos os logs necessários existem e verifica integridade.
-     * @test
      */
+    #[Test]
     public function it_tracks_complete_lifecycle_of_bet_with_audit_trail()
     {
         // 1. Criar dependências
@@ -132,8 +133,8 @@ class BetAuditIntegrityTest extends TestCase
      * - Tenta modificar o log diretamente via ORM (espera exceção).
      * - Tenta excluir o log (espera exceção).
      * - Valida que o log permanece inalterado e disponível.
-     * @test
      */
+    #[Test]
     public function it_ensures_audit_logs_are_immutable()
     {
         // 1. Criar um registro para testar a imutabilidade
@@ -193,8 +194,8 @@ class BetAuditIntegrityTest extends TestCase
      * - Mede o tempo médio de operações únicas e em lote.
      * - Verifica que a operação em lote não é muito mais lenta que operações únicas.
      * - Garante que o tempo médio de todas as operações permaneça dentro de limites aceitáveis.
-     * @test
      */
+    #[Test]
     public function it_performs_within_acceptable_time_limits_under_load()
     {
         $gameType = GameType::factory()->create([
@@ -263,8 +264,8 @@ class BetAuditIntegrityTest extends TestCase
      * - Simulação de atualizações concorrentes e verificação dos logs de atualização.
      * - Simulação de exclusões concorrentes e verificação dos logs de exclusão.
      * - Verifica que os logs de todas as operações foram registrados corretamente.
-     * @test
      */
+    #[Test]
     public function it_handles_concurrent_operations_correctly()
     {
         $gameType = GameType::factory()->create([
@@ -332,8 +333,8 @@ class BetAuditIntegrityTest extends TestCase
      * - Valida que a aposta foi criada com os números corretos.
      * - Garante que um log de auditoria foi criado e está consistente.
      * - Valida o hash de integridade do log conforme esperado.
-     * @test
      */
+    #[Test]
     public function it_handles_database_connection_failures_gracefully()
     {
         // Este teste verifica se a operação principal continua funcionando
