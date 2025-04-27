@@ -115,7 +115,7 @@ return [
         'pgsql_auditoria' => [
             'driver' => 'pgsql',
             'host' => env('PG_HOST', '127.0.0.1'),
-            'port' => env('PG_PORT', '5433'),
+            'port' => env('PG_PORT', '5432'),
             'database' => env('PG_DATABASE', 'simulotto'),
             'username' => env('PG_USERNAME', 'simulotto'),
             'password' => env('PG_PASSWORD', 'simulotto'),

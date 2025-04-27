@@ -31,6 +31,13 @@
         <env name="DB_USERNAME" value="simulotto"/>
         <env name="DB_PASSWORD" value="simulotto"/>
 
+        <env name="PG_CONNECTION" value="pgsql"/>
+        <env name="PG_HOST" value="simulotto-postgres-auditoria"/>
+        <env name="PG_PORT" value="5432"/>
+        <env name="PG_DATABASE" value="simulotto"/>
+        <env name="PG_USERNAME" value="simulotto"/>
+        <env name="PG_PASSWORD" value="simulotto"/>
+
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
